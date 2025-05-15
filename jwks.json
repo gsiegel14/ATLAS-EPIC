@@ -1,12 +1,12 @@
 {
-  "keys":[
+  "keys": [
     {
-      "kty":"RSA",
-      "kid":"atlas-key-001",
-      "alg":"RS384",
-      "use":"sig",
-      "n":"<base64url‑modulus>",
-      "e":"AQAB"
+      "kty": "RSA",
+      "kid": "atlas-key-001",
+      "alg": "RS384",
+      "use": "sig",
+      "n": "<YOUR‑BASE64URL‑MODULUS>",
+      "e": "AQAB"
     }
   ]
 }
