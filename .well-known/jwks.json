@@ -5,7 +5,7 @@
       "kid": "atlas-key-001",
       "alg": "RS384",
       "use": "sig",
-      "n": "<YOUR‑BASE64URL‑MODULUS>",
+      "n": "xwQ72P9z9OYshiQ-ntDYaPnnfwG6u9JAdLMZ5o0dmjlcyrvwQRdoFIKPnO65Q8mh6F_LDSxjxa2Yzo_wdjhbPZLjfUJXgCzm54cClXzT5twzo7lzoAfaJlkTsoZc2HFWqmcXvB7RnH6DkAyyHadVtXRHd6iJJS3XfkPdMgLLFhchvxPauxvtmb5ycyqYgkSHhSjCVUCu-O3y-4UUHn0PZ9Gy8uRJFnxXnWgTF_V2PGOiocwGs_XZv8V9iZH1p4cVgcyXrevV8BP__Cgl_pC-h_TGxad_zl6mg1-5rN0gYXtbtiZ_8XK2RwA_8UBPFwqY1DXgLQTAmKrpUNOYx-ZJGWnzVQ",
       "e": "AQAB"
     }
   ]
