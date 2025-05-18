@@ -2,11 +2,11 @@
   "keys": [
     {
       "kty": "RSA",
+      "n": "vqic0Zt40csTwrx6rGaEZGpXPLecc28DD74Kc1cSXHU3kxvloVj2cMsSRwu6JWERYcuL691labN2sIk2VaaK-Ntou8jwWjQbVZZ8DDn-c_LvqZVDzFkN3L2zXLIERb3dhwGfeq4Kp5319Y073ZiLdM5tnoO3eMO0j1LQhfK4ZKXsxtc1ZJPGfx5PwYPkMtIs0vtLXqGfHL9pKBNyELvXfcqt8gfRKdBKWm683TJ8croPP2mqsOkSFVEriflmrvDsvnTWx8bKxHdaC9SwiMZExA8spcoEQ23TR9opjbFZ2PNVODYy1HCZ8mrm4YmNJXR1JDrDfG7CM7lWJJVASXKAtQ",
+      "e": "AQAB",
       "kid": "atlas-key-001",
-      "alg": "RS384",
       "use": "sig",
-      "n": "7tEAlb11asWHREZGQAkn637IJZBd2APTOubz0XB3JWIrka6PQOUz3qtXlCAxrXvYVLqTfykUBoBvtX1BcvSoR3V75YDtiDR4wyA9mcA0DaTy9j6MWrotJnHloklPv3nIwt-FeVzEAWeeDWrMBjLHUWRRfR5cOpduQ7Ba9Ti68ENL69e5xDmwmJhj4Ct4-zlov5cY9NBmCRLK1lXfctuM-PJi-AfQ6UfYLY8bp0-6HxLHfR4cb2vHO7M3q-w3uTllwMPP_i2iPLFb5rNX7MlWcpZTYGhFyy9H_sOGdd1rMLlJFcbVcWUUkgBw5F4qAgXsFG-sgS4-L9bI476DcNgqPw",
-      "e": "AQAB"
+      "alg": "RS384"
     }
   ]
 }
