@@ -1,0 +1,220 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Palantir Foundry Development Rules for `gsiegel14/ATLAS-EPIC`
+
+This document outlines the rules and best practices for developing code locally that will be deployed to Palantir Foundry, specifically for the `gsiegel14/ATLAS-EPIC` repository. Following these guidelines will ensure robust, maintainable, and performant code that transitions smoothly from local development to the Foundry environment.
+
+## I. Environment Setup
+
+1.  **Development Flow**: Code is developed locally on Mac → synced to GitHub (`gsiegel14/ATLAS-EPIC`) → deployed to Palantir Foundry.
+2.  **Python Version**: Use **Python 3.9+** (Foundry often supports newer versions; Python 3.8 is nearing end-of-life. Verify latest Foundry compatibility).
+3.  **Virtual Environment**:
+    *   Always use a dedicated virtual environment (e.g., `venv`, `conda`) for `ATLAS-EPIC`.
+    *   Command: `python3 -m venv .venv` followed by `source .venv/bin/activate`.
+4.  **Dependencies**:
+    *   Maintain an accurate `requirements.txt` with **pinned versions** (e.g., `requests==2.28.1`, `pyspark==3.3.0`).
+    *   Generate with `pip freeze > requirements.txt` after installing/updating packages.
+    *   Regularly review and update dependencies for security and compatibility.
+
+## II. Code Structure & Python Best Practices
+
+1.  **Modularity**:
+    *   Organize code into logical modules and packages.
+    *   Strive for functions and classes that do one thing well (Single Responsibility Principle).
+    *   Use clear, descriptive names for files, functions, classes, and variables.
+2.  **Foundry Configuration Files**:
+    *   Create well-structured `.yml` configuration files for functions, pipelines, and transformations.
+    *   Refer to Palantir documentation and existing project examples (e.g., `function.yml`, `pipeline.yml`) for correct schema and parameters.
+3.  **Entry Points**:
+    *   Define clear entry points in your Python modules (e.g., a `main()` function or specific transform functions).
+    *   Every Foundry function/transform requires a specific entry point function decorated appropriately (e.g., `@transform_df`, `@transform`).
+4.  **Type Hinting**:
+    *   Use Python type hints extensively for function signatures and complex data structures. This improves readability, aids static analysis, and reduces runtime errors.
+    *   Example: `def process_patient_data(patient: dict) -> pd.DataFrame:`
+5.  **Secrets Management**:
+    *   **Never hardcode credentials** (API keys, passwords, tokens) in code or commit them to Git.
+    *   Utilize Foundry's secret management system for production.
+    *   For local development:
+        *   Use environment variables (e.g., loaded from a `.env` file using `python-dotenv`).
+        *   Ensure `.env` files are listed in `.gitignore`.
+
+## III. Data Handling: PySpark Emphasis
+
+1.  **PySpark Best Practices**:
+    *   **DataFrame API over RDDs**: Prefer the DataFrame API for its optimizations and ease of use.
+    *   **Avoid UDFs When Possible**: Python User-Defined Functions (UDFs) can be performance bottlenecks due to data serialization/deserialization between JVM and Python. Prioritize built-in Spark SQL functions.
+    *   **Schema Definition**: Always define explicit schemas (`StructType`, `StructField`) for DataFrames read from external sources or created manually. This prevents schema inference issues and improves performance.
+    *   **Columnar Operations**: Leverage Spark's columnar processing. Use `select`, `withColumn`, `filter`, `groupBy`, `join`, etc., instead of row-by-row operations or Python loops.
+    *   **Lazy Evaluation**: Understand that transformations are lazy. Actions (e.g., `count()`, `show()`, `write()`) trigger computation.
+    *   **Partitioning**:
+        *   Understand your data's partitioning strategy in Foundry.
+        *   When writing intermediate or final datasets, consider repartitioning (`repartition()`, `coalesce()`) or partitioning by specific columns (`partitionBy()`) to optimize downstream reads.
+    *   **Caching**: Use `df.cache()` or `df.persist(StorageLevel.MEMORY_AND_DISK)` judiciously for DataFrames that are accessed multiple times. Unpersist when no longer needed.
+    *   **Broadcast Joins**: For joins between a large DataFrame and a small DataFrame, consider broadcasting the smaller DataFrame to improve performance. Configure `spark.sql.autoBroadcastJoinThreshold`.
+    *   **Null Handling**: Explicitly handle null values using `isNull()`, `isNotNull()`, `fillna()`, `dropna()`.
+2.  **Spark and Pandas Interoperability**:
+    *   Be mindful of memory constraints when converting Spark DataFrames to Pandas DataFrames (`toPandas()`). This collects all data to the driver node.
+    *   If conversion is necessary, filter data down to a manageable size first.
+    *   When creating Spark DataFrames from Pandas, ensure data types are correctly inferred or explicitly defined.
+
+## IV. Epic FHIR & REST API Interaction
+
+1.  **FHIR Resource Handling**:
+    *   **FHIR Standards**: Adhere to the specific FHIR version (e.g., R4, STU3) supported by the Epic API.
+    *   **Data Models**:
+        *   Utilize Pydantic models or libraries like `fhir.resources` for validating, serializing, and deserializing FHIR resources. This ensures data conforms to FHIR specifications.
+        *   Example: Create Pydantic models for Patient, Observation, Appointment resources you interact with.
+    *   **Resource Validation**: Validate FHIR resources against official profiles or implementation guide-specific profiles if applicable.
+    *   **Querying (FHIR Search)**:
+        *   Understand FHIR search parameters (e.g., `patient.identifier`, `observation.code`, `_include`, `_revinclude`).
+        *   Construct queries carefully to retrieve only necessary data.
+        *   Handle search result bundles and pagination correctly.
+2.  **REST API Best Practices**:
+    *   **Client Library**: Use a robust HTTP client library like `requests`.
+    *   **Authentication & Authorization**:
+        *   Implement secure token handling (e.g., OAuth 2.0 Bearer tokens common with Epic).
+        *   Store tokens securely (Foundry secrets, environment variables) and refresh them as needed.
+        *   Never embed tokens directly in URLs or log them.
+    *   **Rate Limiting & Retries**:
+        *   Be aware of API rate limits. Implement exponential backoff with jitter for retries on transient errors (e.g., 429 Too Many Requests, 5xx Server Errors). Libraries like `tenacity` can help.
+    *   **Pagination**: Most Epic FHIR APIs will return paginated results. Implement logic to follow `next` links in the bundle to retrieve all data.
+    *   **Error Handling**:
+        *   Check HTTP status codes diligently. Handle 4xx (client errors) and 5xx (server errors) appropriately.
+        *   Log detailed error information including status code, response body (if safe), and request details.
+    *   **Idempotency**: For `POST`/`PUT`/`PATCH` operations that modify data, understand and utilize idempotency keys if supported by the API to prevent duplicate operations.
+    *   **Request/Response Logging**: Log key aspects of requests (URL, method, headers without sensitive info) and responses (status code, relevant parts of the body) for debugging, especially during development and for critical operations.
+    *   **Timeouts**: Set appropriate timeouts for API requests to prevent indefinite blocking.
+3.  **Data Transformation (API to PySpark)**:
+    *   Develop clear mapping logic from JSON responses (FHIR resources) to structured PySpark DataFrame schemas.
+    *   Handle nested JSON structures effectively (e.g., using `explode()` or accessing nested fields).
+    *   Ensure data type conversions are correct (e.g., FHIR date/datetime strings to Spark TimestampType).
+
+## V. Error Handling and Logging
+
+1.  **Robust Error Handling**:
+    *   Use `try...except` blocks for operations that can fail, especially I/O, API calls, and data conversions.
+    *   Catch specific exceptions rather than generic `Exception`.
+    *   Provide meaningful error messages that include context.
+    *   For API calls, implement retry mechanisms for transient failures (e.g., network issues, temporary server errors).
+2.  **Logging**:
+    *   Use the standard Python `logging` module. Avoid `print()` statements for application logging.
+    *   Configure log levels (DEBUG, INFO, WARNING, ERROR, CRITICAL) appropriately.
+    *   Include contextual information in log messages: timestamp, module name, function name, relevant data identifiers (e.g., patient ID, request ID, but **never PII/PHI directly in general logs unless specifically secured and intended for audit**).
+    *   Consider structured logging (e.g., JSON format) for easier parsing and analysis in Foundry.
+
+## VI. Testing
+
+1.  **Local Unit Testing**:
+    *   Write unit tests for individual functions and classes using frameworks like `pytest`.
+    *   Test business logic, data transformations, and utility functions.
+    *   Mock external dependencies (APIs, databases) using libraries like `unittest.mock` or `pytest-mock`.
+    *   For PySpark code, use libraries like `chispa` for DataFrame comparison or set up a local SparkSession for testing transformations.
+2.  **Integration Testing**:
+    *   Test the interaction between components (e.g., API client and data processing logic).
+    *   For API interactions, use `requests-mock` to simulate API responses without hitting live Epic endpoints during automated tests.
+    *   Validate end-to-end flows with sample data.
+3.  **FHIR Resource Validation in Tests**:
+    *   When creating mock FHIR data for tests, ensure it is valid against the FHIR schema or use tools to validate it.
+4.  **Test Data**:
+    *   Create representative mock data that resembles Foundry datasets and Epic API responses.
+    *   Be extremely careful with PHI/PII. Use de-identified or synthetic data for testing.
+
+## VII. Security & Compliance (Especially with PHI)
+
+1.  **Authentication & Authorization**:
+    *   As per Secrets Management (II.5) and API Authentication (IV.2.2).
+    *   Ensure Foundry service users have the principle of least privilege.
+2.  **Data Protection (HIPAA, PII/PHI)**:
+    *   **Minimize Data**: Only fetch, process, and store the PII/PHI absolutely necessary for the task.
+    *   **De-identification/Pseudonymization**: If full PHI is not needed for a particular analysis or step, use de-identified or pseudonymized data.
+    *   **Access Controls**: Rely on Foundry's access control mechanisms to restrict access to sensitive datasets.
+    *   **Encryption**: Ensure data is encrypted in transit (HTTPS for APIs) and at rest (handled by Foundry).
+    *   **Audit Trails**: Be aware that actions within Foundry and against Epic systems are typically audited. Code responsibly.
+    *   **No PHI in Logs/Git**: Absolutely no PII/PHI should be present in general application logs, error messages committed to Git, or in any non-secured context.
+
+## VIII. Foundry-Specific Patterns
+
+1.  **Transform Definitions**:
+    *   Use Foundry decorators (`@transform_df`, `@transform`, `@incremental`) correctly.
+    *   Define inputs and outputs clearly.
+2.  **Incremental Transforms**:
+    *   Design pipelines for incremental processing where appropriate to save computation time and resources.
+    *   Understand how to use transaction types and snapshot/append modes.
+3.  **Resource Management**:
+    *   Define memory and CPU requirements in function/transform YAML configurations.
+    *   Set appropriate timeouts.
+4.  **Documentation**:
+    *   **Code Comments**: Document complex logic, assumptions, and non-obvious decisions within the code.
+    *   **Docstrings**: Write clear docstrings for all modules, classes, and functions, explaining their purpose, arguments, and return values (e.g., following Google, NumPy, or Sphinx style).
+    *   **Foundry Dataset & Logic Documentation**: Document each Foundry dataset's schema, purpose, and derivation logic. Document transform logic within Foundry.
+    *   **README**: Maintain a comprehensive `README.md` in the `gsiegel14/ATLAS-EPIC` repository covering setup, key architectural decisions, and deployment notes.
+
+## IX. Version Control (Git & GitHub)
+
+1.  **Branching Strategy**:
+    *   Use feature branches for new development (e.g., `feature/FHIR-patient-ingestion`, `bugfix/fix-appointment-parsing`).
+    *   Keep the `main` (or `master`) branch stable and deployable.
+    *   Merge feature branches into `main` via Pull Requests (PRs).
+2.  **Commit Practices**:
+    *   **Atomic Commits**: Make small, logical commits that represent a single unit of work.
+    *   **Descriptive Commit Messages**: Write clear and concise commit messages (e.g., using Conventional Commits format: `feat: Add FHIR Observation resource processing`, `fix: Correct date parsing for appointment end times`).
+3.  **Pull Requests (PRs)**:
+    *   Require PRs for merging code into `main`.
+    *   PRs should be reviewed by at least one other team member.
+    *   Ensure tests pass before merging.
+4.  **Regular GitHub Sync for `gsiegel14/ATLAS-EPIC`**:
+    *   **Commit Frequently**: Commit your changes locally as you complete logical units of work.
+    *   **Push Regularly**: After completing a significant feature, a logical unit of work, fixing a bug, or at the end of each development session, push your local branch to the remote `gsiegel14/ATLAS-EPIC` repository.
+        ```bash
+        # After staging your changes with git add .
+        git commit -m "Your descriptive commit message"
+        git push origin <your-branch-name>
+        ```
+    *   **Pull Before Pushing/Starting Work**: Always run `git pull origin <current-branch-or-main>` before starting new work or pushing your changes. This fetches the latest updates from the remote, allowing you to integrate them and resolve any conflicts locally first.
+5.  **Tagging**:
+    *   Tag releases that are deployed to Foundry for easy rollback and version tracking (e.g., `git tag v1.0.2`).
+6.  **Change Management**:
+    *   Track changes that require Foundry reconfiguration (e.g., schema changes, input/output dataset changes).
+    *   Document breaking changes clearly in PRs and release notes.
+    *   Communicate significant changes to stakeholders.
+
+---
+
+By adhering to these enhanced guidelines, development for `gsiegel14/ATLAS-EPIC` will be more standardized, robust, and easier to maintain within the Palantir Foundry ecosystem, especially when dealing with complex PySpark jobs and sensitive Epic FHIR data.
+
+## File Organization and Build Best Practices
+
+1. **Project Structure**:
+   - Organize files in consistent, logical directories (e.g., `src`, `config`, `tests`, `docs`)
+   - Keep functions with related purposes in the same module or package
+   - Maintain separation between code, configuration, and resources
+
+2. **Module Organization**:
+   - Use meaningful module names that reflect their purpose
+   - Follow the single responsibility principle - each module should serve one purpose
+   - Group related utility functions in appropriate utility modules
+
+3. **Import Management**:
+   - Organize imports at the top of files in logical groups (standard library, third-party, local)
+   - Use absolute imports for clarity and reliability
+   - Avoid circular imports by refactoring shared functionality
+
+4. **Build Configuration**:
+   - Include appropriate build files (setup.py, pyproject.toml, etc.)
+   - Define explicit build dependencies with version constraints
+   - Include manifest files to ensure all necessary resources are packaged
+
+5. **Asset Organization**:
+   - Keep static assets in dedicated directories (e.g., `assets`, `static`, `resources`)
+   - Use version control for config templates but not for environment-specific configs
+   - Store large binary files outside of git using appropriate tools
+
+6. **Pipeline Organization**:
+   - Organize pipeline components by data domain or business function
+   - Create reusable transformation modules
+   - Structure complex pipelines as modular sub-pipelines for easier maintenance
+
+By following these guidelines, your code will transition smoothly from local development to Palantir Foundry, minimizing environment-specific issues and ensuring reliable execution. 
