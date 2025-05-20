@@ -63,4 +63,87 @@ This simulates the Foundry environment by creating a local Spark session and sam
 1. Create a feature branch (`git checkout -b feature/your-feature`)
 2. Make your changes following the Foundry development rules
 3. Test thoroughly locally
-4. Submit a pull request 
+4. Submit a pull request
+
+# End-to-End Test Instructions with Delta Lake Support
+
+This README provides instructions for running end-to-end tests from bronze to gold with Delta Lake support.
+
+## Prerequisites
+
+- Python 3.8+
+- PySpark 3.5+
+- Delta Lake (`pip install delta-spark`)
+
+## Configuration
+
+1. Ensure Delta Lake is properly installed:
+```bash
+pip install delta-spark
+```
+
+2. Set up the test environment:
+```bash
+# Create test output directory
+mkdir -p e2e_test_output/control/fhir_cursors
+```
+
+## Running the E2E Test
+
+To run the full end-to-end test:
+
+```bash
+python epic-fhir-integration/e2e_test_fhir_pipeline.py --debug --output-dir e2e_test_output
+```
+
+To run with strict mode (no mock fallbacks):
+
+```bash
+python epic-fhir-integration/e2e_test_fhir_pipeline.py --debug --strict --output-dir e2e_test_output
+```
+
+## Test Output Structure
+
+The test creates the following directory structure:
+
+```
+e2e_test_output/
+├── bronze/            # Raw FHIR data (input layer)
+│   └── fhir_raw/
+├── silver/            # Normalized data (transformed layer)
+│   └── fhir_normalized/
+├── gold/              # Analytics-ready tables
+│   ├── patient_summary/
+│   ├── encounter_summary/
+│   └── medication_summary/ 
+├── config/            # Configuration files
+├── control/           # Extraction cursors and workflow state
+├── metrics/           # Pipeline execution metrics
+├── monitoring/        # Runtime metrics
+└── secrets/           # API tokens and credentials
+```
+
+## Troubleshooting
+
+### Delta Lake Issues
+
+If you encounter Delta Lake catalog errors, ensure:
+
+1. The Delta Lake JARs are correctly installed and configured
+2. The Spark session includes the correct Delta Lake catalog configuration:
+   ```python
+   spark = SparkSession.builder \
+      .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+      .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+      .config("spark.jars.packages", "io.delta:delta-core_2.12:2.4.0") \
+      .getOrCreate()
+   ```
+
+### File Format Issues
+
+The pipeline supports multiple input formats:
+- Parquet (preferred) 
+- JSON
+- Delta Lake tables
+
+If one format doesn't work, try running the extraction step to generate data in Parquet format. 
