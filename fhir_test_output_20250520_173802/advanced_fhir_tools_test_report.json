@@ -1,0 +1,56 @@
+{
+  "patient_id": "T1wI5bk8n1YVgvWk9D05BmRV0Pi3ECImNSK8DKyKltsMB",
+  "timestamp": "2025-05-20T17:38:02.512042",
+  "steps": {
+    "authentication": {
+      "success": true,
+      "duration": 2.5069329738616943,
+      "token_type": "string",
+      "timestamp": "2025-05-20T17:38:05.019035"
+    },
+    "fetch_data": {
+      "success": true,
+      "duration": 0.0004699230194091797,
+      "resource_counts": {
+        "Patient": 1,
+        "Observation": 5,
+        "Condition": 1,
+        "Encounter": 1
+      },
+      "timestamp": "2025-05-20T17:38:05.019579",
+      "output_file": "fhir_test_output_20250520_173802/results/raw_resources.json"
+    },
+    "fhirpath": {
+      "success": true,
+      "duration": 0.0003390312194824219,
+      "query_count": 8,
+      "timestamp": "2025-05-20T17:38:05.019951",
+      "output_file": "fhir_test_output_20250520_173802/results/fhirpath_results.json"
+    },
+    "pathling": {
+      "success": true,
+      "duration": 0.04102492332458496,
+      "timestamp": "2025-05-20T17:38:05.061015",
+      "output_file": "fhir_test_output_20250520_173802/results/pathling_results.json"
+    },
+    "datascience": {
+      "success": false,
+      "error": "'FHIRDataset' object has no attribute 'to_pandas'",
+      "duration": 0.0010769367218017578,
+      "timestamp": "2025-05-20T17:38:05.062110"
+    },
+    "validation": {
+      "success": true,
+      "duration": 82.6356749534607,
+      "timestamp": "2025-05-20T17:39:27.697909",
+      "output_file": "fhir_test_output_20250520_173802/results/validation_results.json",
+      "validation_stats": {
+        "total": 8,
+        "valid_count": 0,
+        "invalid_count": 8,
+        "percent_valid": 0.0
+      }
+    }
+  },
+  "overall_success": false
+}

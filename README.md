@@ -53,6 +53,48 @@ This simulates the Foundry environment by creating a local Spark session and sam
 - **Dependency Issues**: Ensure all dependencies are specified with exact versions
 - **Spark vs. Pandas**: Use Spark operations for large datasets, Pandas for smaller ones
 
+## FHIR Data Processing and Validation
+
+The repository now includes enhanced FHIR processing and validation capabilities:
+
+### FHIR Resource Model Integration
+
+We've integrated the `fhir.resources` library for typed FHIR resource models, which provides:
+- Base FHIR specification validation
+- Type-safe attribute access
+- Improved data quality
+
+### FHIR Validation Tools
+
+1. **FHIR Resource Model Validation**
+   - Automatic validation of FHIR resources against the specification
+   - Robust extraction utilities for model attributes
+
+2. **FHIR Profile Validation**
+   - Integration with official HL7 FHIR Validator
+   - Support for US Core and other implementation guides
+   - Profile-based validation of FHIR resources
+
+3. **Data Quality Monitoring with Great Expectations**
+   - Automated expectation suites for FHIR resources
+   - Data quality checks and validation reports
+   - Integration with ETL pipeline
+
+### Running Validation Tools
+
+```bash
+# Set up the FHIR Validator
+python epic-fhir-integration/scripts/setup_fhir_validator.py --dir tools/fhir-validator
+
+# Set up Great Expectations
+python epic-fhir-integration/scripts/setup_great_expectations.py --install
+
+# Run data validation
+python epic-fhir-integration/scripts/run_data_validation.py --resources Patient Observation Encounter
+```
+
+See [docs/howto_validation.md](docs/howto_validation.md) for detailed documentation on validation features.
+
 ## Additional Resources
 
 - Review existing code in this repository for real-world examples
@@ -74,6 +116,8 @@ This README provides instructions for running end-to-end tests from bronze to go
 - Python 3.8+
 - PySpark 3.5+
 - Delta Lake (`pip install delta-spark`)
+- FHIR Resources (`pip install fhir.resources`)
+- Great Expectations (optional, for data validation)
 
 ## Configuration
 
@@ -102,6 +146,12 @@ To run with strict mode (no mock fallbacks):
 python epic-fhir-integration/e2e_test_fhir_pipeline.py --debug --strict --output-dir e2e_test_output
 ```
 
+To run with data validation:
+
+```bash
+python epic-fhir-integration/e2e_test_fhir_pipeline.py --debug --validate --output-dir e2e_test_output
+```
+
 ## Test Output Structure
 
 The test creates the following directory structure:
@@ -120,6 +170,7 @@ e2e_test_output/
 ├── control/           # Extraction cursors and workflow state
 ├── metrics/           # Pipeline execution metrics
 ├── monitoring/        # Runtime metrics
+├── validation/        # Data validation reports
 └── secrets/           # API tokens and credentials
 ```
 
@@ -146,4 +197,12 @@ The pipeline supports multiple input formats:
 - JSON
 - Delta Lake tables
 
-If one format doesn't work, try running the extraction step to generate data in Parquet format. 
+If one format doesn't work, try running the extraction step to generate data in Parquet format.
+
+### Validation Issues
+
+If you encounter validation errors:
+1. Check that the FHIR Validator is installed correctly
+2. Ensure Great Expectations is set up properly
+3. Review validation reports in the `validation` directory
+4. Consult [docs/howto_validation.md](docs/howto_validation.md) for troubleshooting 

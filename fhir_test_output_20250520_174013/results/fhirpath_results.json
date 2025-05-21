@@ -1,0 +1,10 @@
+{
+  "patient_name": null,
+  "gender": null,
+  "birth_date": null,
+  "address": null,
+  "telecom": null,
+  "observation_count": 5,
+  "has_loinc_codes": false,
+  "observation_values": []
+}

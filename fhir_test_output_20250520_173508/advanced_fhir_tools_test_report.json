@@ -1,0 +1,19 @@
+{
+  "patient_id": "T1wI5bk8n1YVgvWk9D05BmRV0Pi3ECImNSK8DKyKltsMB",
+  "timestamp": "2025-05-20T17:35:08.790676",
+  "steps": {
+    "authentication": {
+      "success": true,
+      "duration": 2.5116159915924072,
+      "token_type": "string",
+      "timestamp": "2025-05-20T17:35:11.302354"
+    },
+    "fetch_data": {
+      "success": false,
+      "error": "400 Client Error: Bad Request for url: https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/Observation?subject=Patient%2FT1wI5bk8n1YVgvWk9D05BmRV0Pi3ECImNSK8DKyKltsMB",
+      "duration": 1.949173927307129,
+      "timestamp": "2025-05-20T17:35:13.251568"
+    }
+  },
+  "overall_success": false
+}
