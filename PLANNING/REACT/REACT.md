@@ -16,7 +16,7 @@ Modern clinician‑facing tools need to feel as fluid as **Cursor/Roo/Cline** wh
 ### 1.2 State & data
 
 * UI state → **Zustand** (small, hooks‑based).
-* FHIR/GraphQL data → **Apollo Client** with `typePolicies` so each patient lives in its own normalized cache. ([Nava PBC][2])
+* FHIR data (via REST) → **TanStack Query (React Query)** for robust caching, background synchronization, and server state management. Cache keys can be structured to manage patient data effectively.
 
 **Ship‑check**
 

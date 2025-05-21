@@ -1,0 +1,65 @@
+{
+  "patient_id": "T1wI5bk8n1YVgvWk9D05BmRV0Pi3ECImNSK8DKyKltsMB",
+  "timestamp": "2025-05-21T00:59:01.436827",
+  "steps": {
+    "authentication": {
+      "success": true,
+      "duration": 2.5080082416534424,
+      "token_type": "string",
+      "timestamp": "2025-05-21T00:59:03.944883"
+    },
+    "fetch_data": {
+      "success": true,
+      "duration": 0.0007817745208740234,
+      "resource_counts": {
+        "Patient": 1,
+        "Observation": 5,
+        "Condition": 1,
+        "Encounter": 1
+      },
+      "timestamp": "2025-05-21T00:59:03.945710",
+      "output_file": "fhir_test_output_20250521_005901/bronze/raw_resources.json"
+    },
+    "fhirpath": {
+      "success": true,
+      "duration": 0.0003581047058105469,
+      "query_count": 8,
+      "timestamp": "2025-05-21T00:59:03.946097",
+      "output_file": "fhir_test_output_20250521_005901/results/fhirpath_results.json"
+    },
+    "pathling": {
+      "success": true,
+      "duration": 0.0013439655303955078,
+      "timestamp": "2025-05-21T00:59:03.947465",
+      "output_file": "fhir_test_output_20250521_005901/results/pathling_results.json"
+    },
+    "datascience": {
+      "success": true,
+      "duration": 0.00024127960205078125,
+      "timestamp": "2025-05-21T00:59:03.947743",
+      "output_file": "fhir_test_output_20250521_005901/results/datascience_results.json"
+    },
+    "validation": {
+      "success": true,
+      "duration": 0.00035309791564941406,
+      "timestamp": "2025-05-21T00:59:03.948121",
+      "output_file": "fhir_test_output_20250521_005901/bronze/validation_results.json",
+      "validation_stats": {
+        "total": 8,
+        "valid_count": 1,
+        "invalid_count": 7,
+        "percent_valid": 12.5
+      }
+    },
+    "dashboards": {
+      "success": true,
+      "duration": 0.06415176391601562,
+      "timestamp": "2025-05-21T00:59:04.012296",
+      "output_dir": "fhir_test_output_20250521_005901/dashboard"
+    }
+  },
+  "overall_success": true,
+  "mock_mode": true,
+  "tier": "bronze",
+  "quality_metrics": {}
+}

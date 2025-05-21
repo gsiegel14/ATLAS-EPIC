@@ -224,7 +224,7 @@ With these additions you achieve **Cursor‑parity inside Epic**—clinicians ge
 [3]: https://docs.cursor.com/chat/overview?utm_source=chatgpt.com "Overview - Cursor"
 [4]: https://open-vsx.org/?utm_source=chatgpt.com "Open VSX Registry"
 [5]: https://stackoverflow.com/questions/70765928/is-there-a-way-to-determine-if-the-model-value-was-changed-programmatically-or-m?utm_source=chatgpt.com "monaco editor - Is there a way to determine if the model value was ..."
-[6]: https://www.apollographql.com/docs/react/caching/overview?utm_source=chatgpt.com "Caching in Apollo Client - Apollo GraphQL Docs"
+[6]: https://tanstack.com/query/latest/docs/react/guides/caching "Caching with TanStack Query"
 [7]: https://code.visualstudio.com/api/extension-guides/webview?utm_source=chatgpt.com "Webview API | Visual Studio Code Extension API"
 [8]: https://microsoft.github.io/monaco-editor/typedoc/interfaces/languages.InlineCompletion.html?utm_source=chatgpt.com "InlineCompletion | Monaco Editor API - Microsoft Open Source"
 [9]: https://forum.cursor.com/t/how-to-change-suggestions-color/7395?utm_source=chatgpt.com "How to change suggestions color? - Cursor - Community Forum"

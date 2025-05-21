@@ -669,5 +669,5 @@ With these critical additions, you have a **complete, production‑calibre bluep
 [13]: https://owasp.org/www-project-bullet-proof-react/?utm_source=chatgpt.com "OWASP Bullet-proof React"
 [14]: https://www.digitala11y.com/wcag-checklist/?utm_source=chatgpt.com "WCAG Checklist: A Simplified Guide to WCAG 2.2 AA - DigitalA11Y"
 [15]: https://design.cms.gov/getting-started/for-developers/?theme=healthcare&utm_source=chatgpt.com "For developers - Healthcare.gov Design System"
-[16]: https://www.apollographql.com/docs/react/caching/cache-configuration?utm_source=chatgpt.com "Configuring the Apollo Client cache - Apollo GraphQL Docs"
+[16]: https://tanstack.com/query/latest/docs/react/guides/caching "Caching with TanStack Query"
 [17]: https://stackoverflow.com/questions/68342605/monaco-editor-deltadecorations-changes-the-style-of-the-whole-text-instead-of-ju?utm_source=chatgpt.com "Monaco editor deltaDecorations changes the style of the whole text ..."
