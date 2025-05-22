@@ -169,3 +169,6 @@ This project is licensed under the Apache License 2.0 - see the LICENSE file for
 - FHIR® is the registered trademark of HL7 and is used with the permission of HL7.
 - Epic® is a registered trademark of Epic Systems Corporation.
 - Palantir Foundry® is a registered trademark of Palantir Technologies Inc. 
+## Update (May 22, 2023)
+
+Enhanced EPIC FHIR integration pipeline with improved performance and configuration options.
