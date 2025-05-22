@@ -39,4 +39,5 @@ build/
 out/
 errors.json
 
-gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/gradle-wrapper.propertiesepic_fhir_integration-0.1.0-py3-none-any.whl
+epic-fhir-foundry.tar.gz
