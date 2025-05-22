@@ -1,5 +1,6 @@
 name: CI
 
+# Basic CI workflow for Foundry integration
 on:
   push:
     branches: [ main, master ]
