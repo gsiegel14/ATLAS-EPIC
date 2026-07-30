@@ -7,6 +7,14 @@
       "kid": "atlas-key-001",
       "use": "sig",
       "alg": "RS384"
+    },
+    {
+      "kty": "RSA",
+      "n": "h1zlZygUu4Q45k5TZE6B7R-7VnEW1Ft5BB6XFBI4yYO4LihIDFcuq5hcwD4wcSzHnyv9atyEDpgZXXNU9pL3i0Qsh311-tzlGxjSQ9GxQaM5TTNoJT1gJ3cb8Goura8L1y3XWrbnOWVHZ5tQ4OomuT_4_SM2TRRusjP_f3TLXFuO3Tjb6lo4-KZtRSlT4Qh9qva0uCrcPoJzZ-Kl6XBTvWJmqHk7jX5iHholuQmO_ZRYVvnSrDw-uDVjyQfcxwQ9bUXPTbtWmZsCpTgaci0e8tsC32lWy5zNggXn-tcL8jLWOwChlq1kRm1SpWE4iTf5FAZv5pGunN3Tfr6HWU-UIQ",
+      "e": "AQAB",
+      "kid": "atlas-sandbox-2026-07",
+      "use": "sig",
+      "alg": "RS384"
     }
   ]
 }

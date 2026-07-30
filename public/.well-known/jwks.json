@@ -7,6 +7,14 @@
       "use": "sig",
       "n": "vqic0Zt40csTwrx6rGaEZGpXPLecc28DD74Kc1cSXHU3kxvloVj2cMsSRwu6JWERYcuL691labN2sIk2VaaK-Ntou8jwWjQbVZZ8DDn-c_LvqZVDzFkN3L2zXLIERb3dhwGfeq4Kp5319Y073ZiLdM5tnoO3eMO0j1LQhfK4ZKXsxtc1ZJPGfx5PwYPkMtIs0vtLXqGfHL9pKBNyELvXfcqt8gfRKdBKWm683TJ8croPP2mqsOkSFVEriflmrvDsvnTWx8bKxHdaC9SwiMZExA8spcoEQ23TR9opjbFZ2PNVODYy1HCZ8mrm4YmNJXR1JDrDfG7CM7lWJJVASXKAtQ",
       "e": "AQAB"
+    },
+    {
+      "kty": "RSA",
+      "kid": "atlas-sandbox-2026-07",
+      "alg": "RS384",
+      "use": "sig",
+      "n": "h1zlZygUu4Q45k5TZE6B7R-7VnEW1Ft5BB6XFBI4yYO4LihIDFcuq5hcwD4wcSzHnyv9atyEDpgZXXNU9pL3i0Qsh311-tzlGxjSQ9GxQaM5TTNoJT1gJ3cb8Goura8L1y3XWrbnOWVHZ5tQ4OomuT_4_SM2TRRusjP_f3TLXFuO3Tjb6lo4-KZtRSlT4Qh9qva0uCrcPoJzZ-Kl6XBTvWJmqHk7jX5iHholuQmO_ZRYVvnSrDw-uDVjyQfcxwQ9bUXPTbtWmZsCpTgaci0e8tsC32lWy5zNggXn-tcL8jLWOwChlq1kRm1SpWE4iTf5FAZv5pGunN3Tfr6HWU-UIQ",
+      "e": "AQAB"
     }
   ]
-} 
+}
